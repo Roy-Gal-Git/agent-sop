@@ -1,49 +1,38 @@
 from unittest.mock import MagicMock, patch
 
-from strands_agents_sops.rules import output_rules
+import pytest
+
+from strands_agents_sops.rules import get_sop_format, output_rules
 
 
-def test_output_rules_no_directory(capsys):
-    """Test output_rules when rules directory doesn't exist"""
+def test_get_sop_format_file_not_found():
+    """Test get_sop_format raises FileNotFoundError when rule file doesn't exist"""
     with patch("strands_agents_sops.rules.Path") as mock_path:
-        mock_rules_dir = MagicMock()
-        mock_rules_dir.exists.return_value = False
-        mock_path.return_value.parent.__truediv__.return_value = mock_rules_dir
+        mock_rule_file = MagicMock()
+        mock_rule_file.read_text.side_effect = FileNotFoundError("No such file")
+        mock_path.return_value.parent.__truediv__.return_value.__truediv__.return_value = mock_rule_file
+
+        with pytest.raises(FileNotFoundError):
+            get_sop_format()
+
+
+def test_get_sop_format_file_exists():
+    """Test get_sop_format when rule file exists"""
+    with patch("strands_agents_sops.rules.Path") as mock_path:
+        mock_rule_file = MagicMock()
+        mock_rule_file.read_text.return_value = "Test rule content"
+        mock_path.return_value.parent.__truediv__.return_value.__truediv__.return_value = mock_rule_file
+
+        result = get_sop_format()
+        assert result == "Test rule content"
+
+
+def test_output_rules_with_content(capsys):
+    """Test output_rules when get_sop_format returns content"""
+    with patch("strands_agents_sops.rules.get_sop_format") as mock_get:
+        mock_get.return_value = "Test rule content"
 
         output_rules()
 
         captured = capsys.readouterr()
-        assert "Rules directory not found" in captured.out
-
-
-def test_output_rules_no_files(capsys):
-    """Test output_rules when no rule files exist"""
-    with patch("strands_agents_sops.rules.Path") as mock_path:
-        mock_rules_dir = MagicMock()
-        mock_rules_dir.exists.return_value = True
-        mock_rules_dir.glob.return_value = []
-        mock_path.return_value.parent.__truediv__.return_value = mock_rules_dir
-
-        output_rules()
-
-        captured = capsys.readouterr()
-        assert "No rule files found" in captured.out
-
-
-def test_output_rules_with_files(capsys):
-    """Test output_rules with rule files"""
-    with patch("strands_agents_sops.rules.Path") as mock_path:
-        mock_file = MagicMock()
-        mock_file.name = "test.md"
-        mock_file.read_text.return_value = "Test content"
-
-        mock_rules_dir = MagicMock()
-        mock_rules_dir.exists.return_value = True
-        mock_rules_dir.glob.return_value = [mock_file]
-        mock_path.return_value.parent.__truediv__.return_value = mock_rules_dir
-
-        output_rules()
-
-        captured = capsys.readouterr()
-        assert "=== test.md ===" in captured.out
-        assert "Test content" in captured.out
+        assert captured.out.strip() == "Test rule content"
