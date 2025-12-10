@@ -236,11 +236,11 @@ strands-agents-sops commands --type cursor --sop-paths ~/my-sops
 This creates command files in `.cursor/commands/`:
 ```
 .cursor/commands/
-├── code-assist.md
-├── codebase-summary.md
-├── code-task-generator.md
-├── pdd.md
-└── custom-workflow.md
+├── code-assist.sop.md
+├── codebase-summary.sop.md
+├── code-task-generator.sop.md
+├── pdd.sop.md
+└── custom-workflow.sop.md
 ```
 
 ### Using Commands in Cursor
