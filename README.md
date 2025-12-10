@@ -192,16 +192,16 @@ Each Agent SOP can be automatically converted to Cursor command format:
 
 ```bash
 # Generate Cursor commands from built-in SOPs (default output: .cursor/commands)
-strands-agents-sops cursor
+strands-agents-sops commands --type cursor
 
 # Or specify custom output directory
-strands-agents-sops cursor --output-dir .cursor/commands
+strands-agents-sops commands --type cursor --output-dir .cursor/commands
 
 # Load external SOPs from custom directories
-strands-agents-sops cursor --sop-paths ~/my-sops:/path/to/other-sops
+strands-agents-sops commands --type cursor --sop-paths ~/my-sops:/path/to/other-sops
 
 # External SOPs override built-in SOPs with same name
-strands-agents-sops cursor --sop-paths ~/custom-sops --output-dir .cursor/commands
+strands-agents-sops commands --type cursor --sop-paths ~/custom-sops --output-dir .cursor/commands
 ```
 
 #### External SOP Loading
@@ -230,7 +230,7 @@ Do something custom.
 EOF
 
 # Generate Cursor commands with your custom SOPs
-strands-agents-sops cursor --sop-paths ~/my-sops
+strands-agents-sops commands --type cursor --sop-paths ~/my-sops
 ```
 
 This creates command files in `.cursor/commands/`:
@@ -245,7 +245,7 @@ This creates command files in `.cursor/commands/`:
 
 ### Using Commands in Cursor
 
-1. **Generate commands**: Run `strands-agents-sops cursor` in your project root
+1. **Generate commands**: Run `strands-agents-sops commands --type cursor` in your project root
 2. **Execute workflows**: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist`)
 3. **Provide parameters**: When prompted, provide the required parameters for the workflow
 

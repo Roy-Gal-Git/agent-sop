@@ -5,6 +5,13 @@ from .mcp import run_mcp_server
 from .rules import output_rules
 from .skills import generate_anthropic_skills
 
+# Registry for command generators: maps type -> (generator_function, default_output_dir)
+COMMAND_GENERATORS = {
+    "cursor": (generate_cursor_commands, ".cursor/commands"),
+    # Future types can be added here:
+    # "claude": (generate_claude_commands, ".claude/commands"),
+}
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -38,16 +45,21 @@ def main():
     # Rules output command
     subparsers.add_parser("rule", help="Output agent SOP authoring rule")
 
-    # Cursor commands generation command
-    cursor_parser = subparsers.add_parser(
-        "cursor", help="Generate Cursor IDE commands from SOPs"
+    # Commands generation command (supports multiple types: cursor, claude, etc.)
+    commands_parser = subparsers.add_parser(
+        "commands", help="Generate IDE commands from SOPs"
     )
-    cursor_parser.add_argument(
+    commands_parser.add_argument(
+        "--type",
+        required=True,
+        choices=list(COMMAND_GENERATORS.keys()),
+        help=f"Type of commands to generate ({', '.join(COMMAND_GENERATORS.keys())}, etc.)",
+    )
+    commands_parser.add_argument(
         "--output-dir",
-        default=".cursor/commands",
-        help="Output directory for Cursor commands (default: .cursor/commands)",
+        help="Output directory for commands (default varies by type)",
     )
-    cursor_parser.add_argument(
+    commands_parser.add_argument(
         "--sop-paths",
         help="Colon-separated list of directory paths to load external SOPs from. "
         "Supports absolute paths, relative paths, and tilde (~) expansion.",
@@ -60,9 +72,16 @@ def main():
         generate_anthropic_skills(args.output_dir, sop_paths=sop_paths)
     elif args.command == "rule":
         output_rules()
-    elif args.command == "cursor":
+    elif args.command == "commands":
         sop_paths = getattr(args, "sop_paths", None)
-        generate_cursor_commands(args.output_dir, sop_paths=sop_paths)
+        command_type = args.type
+
+        if command_type not in COMMAND_GENERATORS:
+            parser.error(f"Unsupported command type: {command_type}")
+
+        generator_func, default_output_dir = COMMAND_GENERATORS[command_type]
+        output_dir = args.output_dir or default_output_dir
+        generator_func(output_dir, sop_paths=sop_paths)
     else:
         # Default to MCP server
         sop_paths = getattr(args, "sop_paths", None)

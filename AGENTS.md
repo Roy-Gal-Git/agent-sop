@@ -133,17 +133,17 @@ strands-agents-sops skills --sop-paths ~/my-sops --output-dir ./skills
 ### Cursor IDE Integration
 ```bash
 # Generate Cursor commands from built-in SOPs (default: .cursor/commands)
-strands-agents-sops cursor
+strands-agents-sops commands --type cursor
 
 # Specify custom output directory
-strands-agents-sops cursor --output-dir .cursor/commands
+strands-agents-sops commands --type cursor --output-dir .cursor/commands
 
 # Include custom SOPs in commands generation
-strands-agents-sops cursor --sop-paths ~/my-sops --output-dir .cursor/commands
+strands-agents-sops commands --type cursor --sop-paths ~/my-sops --output-dir .cursor/commands
 ```
 
 **Usage in Cursor:**
-1. Generate commands: Run `strands-agents-sops cursor` in your project root
+1. Generate commands: Run `strands-agents-sops commands --type cursor` in your project root
 2. Execute workflows: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist`)
 3. Provide parameters: When prompted, provide the required parameters for the workflow
 
