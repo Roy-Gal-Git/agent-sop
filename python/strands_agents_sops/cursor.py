@@ -86,7 +86,7 @@ Type `/` followed by `{command_name}` in the Cursor chat to execute this workflo
 {sop_content}
 """
 
-    command_file = output_path / f"{command_name}.md"
+    command_file = output_path / f"{command_name}.sop.md"
     command_file.write_text(command_content, encoding="utf-8")
     print(f"Created Cursor command: {command_file}")
 
