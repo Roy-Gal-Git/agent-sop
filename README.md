@@ -72,12 +72,17 @@ Initialize the project environment and create necessary directory structures.
 | **[pdd](agent-sops/pdd.sop.md)** | Prompt-driven development methodology | Complex problem solving, architectural decisions, system design |
 | **[code-task-generator](agent-sops/code-task-generator.sop.md)** | Intelligent task breakdown and planning from requirements | Project planning, sprint preparation, requirement analysis |
 | **[code-assist](agent-sops/code-assist.sop.md)** | TDD-based code implementation with structured workflow | Feature development, bug fixes, refactoring |
+| **[eval](agent-sops/eval.sop.md)** | Automated evaluation workflow for AI agents using [Strands Evals SDK](https://github.com/strands-agents/evals) | Evaluation planning, test data generation, evaluation execution, and result analysis |
 
 ## Quick Start
 
 Install the `strands-agents-sops` package:
 
 ```bash
+# Using Homebrew
+brew install strands-agents-sops
+
+# Or using pip
 pip install strands-agents-sops
 ```
 
@@ -86,8 +91,11 @@ pip install strands-agents-sops
 Install strands agents and the sops package:
 
 ```bash
-pip install strands-agents strands-agents-tools strands-agents-sops
+brew install strands-agents-sops
+pip install strands-agents strands-agents-tools
 ```
+
+> **Note:** See [Quick Start](#quick-start) above for pip installation of `strands-agents-sops`.
 
 Create a simple cli coding agent:
 
@@ -109,11 +117,11 @@ while(True):
 
 ### Using as MCP Server
 
-The MCP (Model Context Protocol) server exposes SOPs as tools that AI assistants can discover and execute on-demand:
+The MCP (Model Context Protocol) server exposes SOPs as prompts that AI assistants can discover and use on-demand:
 
 ```bash
-# Install the package
-pip install strands-agents-sops
+# Install the package (see Quick Start for pip alternative)
+brew install strands-agents-sops
 
 # Start MCP server with built-in SOPs only
 strands-agents-sops mcp
@@ -433,11 +441,10 @@ strands-agents-sops rule
 
 The rule can be used in various AI coding agents:
 
-1. **Kiro IDE** - Copy into your project as `.kiro/steering/agent-sop-format.md`.
-1. **Kiro CLI** - Pin the rule file via the `/context` command or instruct Kiro CLI to read the rule file.
+1. **Kiro** - Copy into your home directory or project as `.kiro/steering/agent-sop-format.md`.
 2. **Amazon Q Developer** - Copy into your project as `.amazonq/rules/agent-sop-format.md`.
 3. **Claude Code** - Instruct Claude Code to read the rule file.
-4. **Cursor** - Copy into your project as `.cursor/rules/agent-sop-format.mdc` folder (Note the `.mdc` file extension).
+4. **Cursor** - Copy into your project as `.cursor/rules/agent-sop-format.mdc` (Note the `.mdc` file extension).
 5. **Cline** - Copy into your project as `.clinerules/agent-sop-format.md`.
 
 ### Basic Structure
