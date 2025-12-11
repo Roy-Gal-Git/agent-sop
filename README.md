@@ -246,12 +246,12 @@ This creates command files in `.cursor/commands/`:
 ### Using Commands in Cursor
 
 1. **Generate commands**: Run `strands-agents-sops commands --type cursor` in your project root
-2. **Execute workflows**: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist`)
+2. **Execute workflows**: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist.sop`)
 3. **Provide parameters**: When prompted, provide the required parameters for the workflow
 
 **Example:**
 ```
-You: /code-assist
+You: /code-assist.sop
 
 AI: I'll help you implement code using the code-assist workflow. 
     Please provide the following required parameters:

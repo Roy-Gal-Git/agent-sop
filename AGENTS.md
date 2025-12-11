@@ -144,7 +144,7 @@ strands-agents-sops commands --type cursor --sop-paths ~/my-sops --output-dir .c
 
 **Usage in Cursor:**
 1. Generate commands: Run `strands-agents-sops commands --type cursor` in your project root
-2. Execute workflows: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist`)
+2. Execute workflows: In Cursor chat, type `/` followed by the command name (e.g., `/code-assist.sop`)
 3. Provide parameters: When prompted, provide the required parameters for the workflow
 
 **Note:** Cursor commands don't support explicit parameters, so the AI will prompt you for required inputs when you execute a command. The generated commands include parameter documentation to guide this interaction.
