@@ -71,6 +71,7 @@ def _create_command_file(
     # Create command content
     # Cursor commands are plain markdown, so we can include the full SOP
     # but we'll add a header to make it clear this is a command
+    # Wrap SOP content in XML tags like MCP server does, with "Run this SOP:" prefix
     command_content = f"""# {command_name.replace('-', ' ').title()}
 
 {description}
@@ -83,7 +84,12 @@ Type `/` followed by `{command_name}` in the Cursor chat to execute this workflo
 
 ---
 
+Run this SOP:
+<agent-sop name="{command_name}">
+<content>
 {sop_content}
+</content>
+</agent-sop>
 """
 
     command_file = output_path / f"{command_name}.sop.md"
